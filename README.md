@@ -1,9 +1,11 @@
 # a_new_day_bot
-telegram bot to say something at 0:00:00 of a day, and can every hour tell you the time now
+一个超简单的Telegram机器人，应某群绒布球要求写的。
+功能是每天0点问候群友：新的一天开始了！
+其实也可以设置定时在每小时或者任何时间报时或者问候。
 
 
-# install
-use npm to install these pack:
+# 安装
+使用NPM安装一下依赖即可:
 
 node-telegram-bot-api
 
@@ -15,11 +17,13 @@ request
 
 silly-datetime
 
-# useage
-modify your bot token(TOKEN) and webhook(url) in a_new_day_bot.js
+# 用法
+在a_new_day_bot.js中修改你的bot token(TOKEN) 与 webhook(url)。
 
-if you use a reverse Proxy (httpd/nginx), modify the port.
+如果你使用了反代 (如httpd/nginx), 记得留意是否需要改端口号。
 
-change your word the bot said every hour or day.
+记得修改提示语和几点报时。
 
-then, run node a_new_day_bot.js
+运行：
+
+node a_new_day_bot.js
