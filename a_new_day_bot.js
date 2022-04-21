@@ -7,8 +7,8 @@ const sd = require('silly-datetime');
 const fs = require('fs');
 
 
-const TOKEN = 'your token';
-const url = 'https://your.webhook.url';
+const TOKEN = 'YOUR-TOKEN-HERE';
+const url = 'YOUR-URL-HERE';
 const port = 9001;
 
 
@@ -37,6 +37,27 @@ app.post(`/bot${TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
 });
+
+app.post('/send', function (req, res) {
+  chat_id=req.body.chat_id
+  secret=req.body.secret
+  if (secret === 'YOUR-PASSWORD-HERE') {
+    if(req.body.type==='msg'){
+      console.log('sent_msg:',chat_id, req.body.message);
+      bot.sendMessage(chat_id, req.body.message);
+      res.send(`OK`);
+    }
+    if(req.body.type==='photo'){
+      console.log('sent_photo:',chat_id, req.body.url);
+      bot.sendPhoto(chat_id, req.body.url);
+      res.send(`OK`);
+    }
+  }
+  else {
+    console.log('send_msg_bad_secret');
+    res.send(`???`);
+  }
+})
 
 app.listen(port, () => {
   console.log(`Express server is listening on ${port}`);
@@ -91,23 +112,24 @@ const sendmessageanewday = ()=>{
     schedule.scheduleJob('0 0 0 * * *',()=>{
       enablelist.forEach(function(x){
         console.log('send to:'+x)
-        bot.sendMessage(x, '新的一天开始了！');
+        bot.sendMessage(x, '绒布球们快乐的一天开始了！');
       });
     });
 }
 
 
+
 sendmessageanewday();
 
-const sendmessageanewdayhour = ()=>{
-  schedule.scheduleJob('0 0 * * * *',()=>{
-    enablelist.forEach(function(x){
-      console.log('send to:'+x)
-      let timenow=sd.format(new Date(), 'YYYY-MM-DD HH:mm:00');
-      bot.sendMessage(x, '新的一小时开始了！' + '现在是北京时间 '+timenow);
-    });
-  });
-}
+// const sendmessageanewdayhour = ()=>{
+//   schedule.scheduleJob('0 0 * * * *',()=>{
+//     enablelist.forEach(function(x){
+//       console.log('send to:'+x)
+//       let timenow=sd.format(new Date(), 'YYYY-MM-DD HH:mm:00');
+//       bot.sendMessage(x, '新的一小时开始了！' + '现在是北京时间 '+timenow);
+//     });
+//   });
+// }
 
 
-sendmessageanewdayhour();
+// sendmessageanewdayhour();
