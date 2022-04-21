@@ -10,6 +10,7 @@ const fs = require('fs');
 const TOKEN = 'YOUR-TOKEN-HERE';
 const url = 'YOUR-URL-HERE';
 const port = 9001;
+const ownerid = 'YOURID';
 
 
 let enablelist = new Array();
@@ -38,34 +39,15 @@ app.post(`/bot${TOKEN}`, (req, res) => {
   res.sendStatus(200);
 });
 
-app.post('/send', function (req, res) {
-  chat_id=req.body.chat_id
-  secret=req.body.secret
-  if (secret === 'YOUR-PASSWORD-HERE') {
-    if(req.body.type==='msg'){
-      console.log('sent_msg:',chat_id, req.body.message);
-      bot.sendMessage(chat_id, req.body.message);
-      res.send(`OK`);
-    }
-    if(req.body.type==='photo'){
-      console.log('sent_photo:',chat_id, req.body.url);
-      bot.sendPhoto(chat_id, req.body.url);
-      res.send(`OK`);
-    }
-  }
-  else {
-    console.log('send_msg_bad_secret');
-    res.send(`???`);
-  }
-})
+
 
 app.listen(port, () => {
   console.log(`Express server is listening on ${port}`);
 });
 
-bot.onText(/\/getid_a_new_day_bot/, function onLoveText(msg) {
+bot.onText(/\/get_chatid/, function onLoveText(msg) {
     const chatId = msg.chat.id;
-    console.log(`getid_a_new_day_bot`+msg.chat.id)
+    console.log(`get_chatid`+msg.chat.id)
     bot.sendMessage(chatId, chatId);
 });
 
@@ -107,6 +89,45 @@ bot.onText(/\/status_a_new_day_bot/, function onLoveText(msg) {
 
   }
 });
+
+bot.onText(/\/howtosend/, function onLoveText(msg) {
+  const chatId = msg.chat.id;
+  console.log(`howtosend`+msg.chat.id);
+  bot.sendMessage(chatId, 'Should be: send text/img,target_id,content');
+});
+
+
+bot.onText(/\/send (.+)/, function onLoveText(msg, match) {
+  let senderId = msg.chat.id;
+  if (senderId != ownerid) {
+      bot.sendMessage(senderId, 'Auth fail');
+  }
+  else {
+    let user_cmd = match[1];
+    let cmds = user_cmd.split(',');
+    if (cmds.length != 3) {
+        bot.sendMessage(senderId, 'Wrong format! Should be: send text/img,target_id,content');
+    }
+    else {
+        if(cmds[0]==='text'){
+            console.log('sent_msg:',cmds[1], cmds[2]);
+            bot.sendMessage(cmds[1], cmds[2]);
+            bot.sendMessage(senderId, 'OK');
+          }
+          else if(cmds[0]==='img'){
+            console.log('sent_photo:',cmds[1], cmds[2]);
+            bot.sendPhoto(cmds[1], cmds[2]);
+            bot.sendMessage(senderId, 'OK');
+          }
+          else {
+            bot.sendMessage(senderId, 'Only support text/img');
+          }
+    }
+  }
+});
+
+
+
 
 const sendmessageanewday = ()=>{
     schedule.scheduleJob('0 0 0 * * *',()=>{
