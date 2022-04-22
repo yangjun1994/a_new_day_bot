@@ -10,7 +10,7 @@ const fs = require('fs');
 const TOKEN = 'YOUR-TOKEN-HERE';
 const url = 'YOUR-URL-HERE';
 const port = 9001;
-const ownerid = 'YOURID';
+const ownerid = ['YOURID'];
 
 
 let enablelist = new Array();
@@ -99,10 +99,7 @@ bot.onText(/\/howtosend/, function onLoveText(msg) {
 
 bot.onText(/\/send (.+)/, function onLoveText(msg, match) {
   let senderId = msg.chat.id;
-  if (senderId != ownerid) {
-      bot.sendMessage(senderId, 'Auth fail');
-  }
-  else {
+  if (ownerids.includes(senderId.toString())) {
     let user_cmd = match[1];
     let cmds = user_cmd.split(',');
     if (cmds.length != 3) {
@@ -123,6 +120,9 @@ bot.onText(/\/send (.+)/, function onLoveText(msg, match) {
             bot.sendMessage(senderId, 'Only support text/img');
           }
     }
+  }
+  else  {
+      bot.sendMessage(senderId, 'Auth fail');
   }
 });
 
