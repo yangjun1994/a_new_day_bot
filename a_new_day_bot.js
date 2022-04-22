@@ -1,26 +1,26 @@
-const TelegramBot = require('node-telegram-bot-api');
-const schedule = require('node-schedule');
-const express = require('express');
-const bodyParser = require('body-parser');
-const request = require('request');
-const sd = require('silly-datetime');
-const fs = require('fs');
+const TelegramBot = require("node-telegram-bot-api");
+const schedule = require("node-schedule");
+const express = require("express");
+const bodyParser = require("body-parser");
+const request = require("request");
+const sd = require("silly-datetime");
+const fs = require("fs");
 
-
-const TOKEN = 'YOUR-TOKEN-HERE';
-const url = 'YOUR-URL-HERE';
-const port = 9001;
-const ownerid = ['YOURID'];
-
-
+const conf = require('./config.json');
+const TOKEN = conf.TOKEN;
+const url = conf.url;
+const port = conf.port;
+const ownerids = conf.ownerids;
 let enablelist = new Array();
+
+
 function savelist() {
-  fs.writeFile("enablelist.txt", JSON.stringify(enablelist), (err) => {
+  fs.writeFile("enablelist", JSON.stringify(enablelist), (err) => {
     if (!err) console.log("save success");
   });
 }
 function loadlist() {
-  enablelist = JSON.parse(fs.readFileSync("enablelist.txt"));
+  enablelist = JSON.parse(fs.readFileSync("enablelist"));
   console.log(enablelist);
   console.log("load success");
 }

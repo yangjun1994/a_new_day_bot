@@ -1,0 +1,6 @@
+{
+  "TOKEN": "YOUR-TOKEN-HERE",
+  "url": "YOUR-URL-HERE",
+  "port": 9001,
+  "ownerids": ["YOURID"]
+}

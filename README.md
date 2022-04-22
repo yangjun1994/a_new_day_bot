@@ -18,11 +18,9 @@ request
 silly-datetime
 
 # 用法
-在a_new_day_bot.js中修改你的bot token(TOKEN) 与 webhook(url)。
+在config.json中修改你的bot token(TOKEN) ， webhook(url)，端口号(port)，白名单等(ownerid)。
 
-如果你使用了反代 (如httpd/nginx), 记得留意是否需要改端口号。
-
-记得修改提示语和几点报时。
+记得在a_new_day_bot.js修改提示语和几点报时。
 
 运行：
 
